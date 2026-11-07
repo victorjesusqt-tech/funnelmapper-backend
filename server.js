@@ -3,18 +3,19 @@ const pool = require('./src/config/database');
 const logger = require('./src/utils/logger');
 require('dotenv').config();
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
 
 async function startServer() {
   try {
-    // 1. Probar conexión a la base de datos MariaDB / MySQL
+    // 1. Probar conexión a la base de datos MariaDB / MySQL / TiDB
     const connection = await pool.getConnection();
-    logger.info('✓ Conexión a la base de datos MariaDB establecida con éxito (funnelmapper_db)');
+    logger.info('✓ Conexión a la base de datos establecida con éxito (funnelmapper_db)');
     connection.release();
 
     // 2. Iniciar servidor HTTP
-    const server = app.listen(PORT, () => {
-      logger.info(`🚀 Servidor FunnelMapper corriendo en http://localhost:${PORT}`);
+    const server = app.listen(PORT, HOST, () => {
+      logger.info(`🚀 Servidor FunnelMapper corriendo en http://${HOST}:${PORT}`);
       logger.info(`Entorno: ${process.env.NODE_ENV || 'development'}`);
     });
 
